@@ -1,10 +1,11 @@
 <launch>
-  <arg name="mav_name" default="firefly"/>
+  <arg name="mav_name" default="iris"/>
   <arg name="world_name" default="basic"/>
   <arg name="enable_logging" default="false" />
   <arg name="enable_ground_truth" default="true" />
   <arg name="log_file" default="$(arg mav_name)" />
   <arg name="odom_topic" default="/iris/odometry_sensor1/odometry"/>
+  <arg name="pose_topic" default="/iris/odometry_sensor1/poses_with_covariance"/>
 
   <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/>
   <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
@@ -27,8 +28,12 @@
       <rosparam command="load" file="$(find rotors_gazebo)/resource/lee_controller_$(arg mav_name).yaml" />
       <rosparam command="load" file="$(find rotors_gazebo)/resource/$(arg mav_name).yaml" />
       <remap from="odometry" to="$(arg odom_topic)" />
+      <remap from="command/pose" to="$(arg pose_topic)"/>
+      <remap from="command/trajectory" to="/command/trajectory"/>
     </node>
+    <!-- <node name="pose_converter" pkg="rotors_gazebo" type="pose_converter" output="screen"/> -->
     <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <!-- <node name="waypoint_publisher_file" pkg="rotors_gazebo" type="waypoint_publisher_file" output="screen" args="$(find rotors_gazebo)/resource/example_waypoints.txt"/> -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   </group>
