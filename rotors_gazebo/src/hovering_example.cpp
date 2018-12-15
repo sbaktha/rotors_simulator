@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
   ROS_INFO("Publishing waypoint on namespace %s: [%f, %f, %f].",
            nh.getNamespace().c_str(), desired_position.x(),
            desired_position.y(), desired_position.z());
-  trajectory_pub.publish(trajectory_msg);
+  // trajectory_pub.publish(trajectory_msg);
 
   ros::spinOnce();
   ros::shutdown();
